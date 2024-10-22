@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_crud_firebase/services/firestore.dart';
 
@@ -53,6 +54,37 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
       ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: firestoreService.getNotesStream(), 
+        builder: (context, snapshot) {
+          // If we have data, get all the docs
+          if (snapshot.hasData) {
+            List notesList = snapshot.data!.docs;
+
+            // Display as a list view
+            return ListView.builder(
+              itemBuilder:  (context, index) {
+                // Get the individual document
+                DocumentSnapshot document = notesList[index];
+                String docId = document.id;
+
+                // Get the note from each document
+                Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                String noteText = data['note'];
+
+                // display as a list tile
+                return ListTile(
+                  title: Text(noteText),
+                );
+              }
+            );
+          } 
+          // If there is no data return no nothing
+          else {
+            return const Text("There are no notes...");
+          }
+        }
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: openNoteBox,
         backgroundColor: Colors.blueAccent,
