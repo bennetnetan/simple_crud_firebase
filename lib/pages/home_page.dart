@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController textController = TextEditingController();
   
   // create a dialogue box to add a note
-  void openNoteBox(){
+  void openNoteBox({String? docId}){
     showDialog(context: context, builder: (context) => AlertDialog(
       title: Text('Add a note'),
       content: TextField(
@@ -29,7 +29,11 @@ class _HomePageState extends State<HomePage> {
         // button to save
         ElevatedButton(onPressed: () {
           // save the note
-          firestoreService.addNote(textController.text);
+          if (docId == null) {
+            firestoreService.addNote(textController.text);
+          } else {
+            firestoreService.updateNotes(docId, textController.text);
+          }
 
           // Clear the text controller
           textController.clear();
@@ -63,6 +67,7 @@ class _HomePageState extends State<HomePage> {
 
             // Display as a list view
             return ListView.builder(
+              itemCount: notesList.length,
               itemBuilder:  (context, index) {
                 // Get the individual document
                 DocumentSnapshot document = notesList[index];
@@ -75,13 +80,35 @@ class _HomePageState extends State<HomePage> {
                 // display as a list tile
                 return ListTile(
                   title: Text(noteText),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Update button
+                      IconButton(
+                        icon: const Icon(Icons.settings),
+                        onPressed: () => openNoteBox(docId: docId),
+                      ),
+                      // Delete button
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => firestoreService.deleteNotes(docId),
+                        ),
+                    ],
+                  ),
                 );
               }
             );
           } 
           // If there is no data return no nothing
           else {
-            return const Text("There are no notes...");
+            return const Text(
+              "There are no notes...", 
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.black54,
+                letterSpacing: 1.5,
+                ),
+              );
           }
         }
         ),
