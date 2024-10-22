@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "456316594497",
+    "project_id": "crudtutorial-8805e",
+    "storage_bucket": "crudtutorial-8805e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456316594497:android:c470b04aec84cfc3cc99c0",
+        "android_client_info": {
+          "package_name": "com.benjanetan.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwdrrH1VuNG-LMCYnpy5YtsGtzA6G4_IM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
